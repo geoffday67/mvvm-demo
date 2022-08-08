@@ -29,7 +29,12 @@ class MainViewModel : ViewModel() {
                 }
             })
     }
-    fun handleSubmit() {
+
+    fun immediate() {
+        name.value = "Geoff at once"
+    }
+
+    fun delay() {
         viewModelScope.launch {
             name.value = "... wait for it"
             delay(2000)
