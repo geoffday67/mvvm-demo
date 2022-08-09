@@ -1,28 +1,58 @@
 package com.example.mvvmdemo
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val model: MainViewModel by viewModels()
+        val viewModel = MainViewModel()
 
-        model.name.observe(this) {
-            findViewById<TextView>(R.id.name).text = "Hello ${it ?: "stranger"}"
-        }
-
-        model.geoff.observe(this) {
-            findViewById<TextView>(R.id.geoff).text = "Geoff is ${it ?: "not sure"}"
-        }
-
-        findViewById<Button>(R.id.submit).setOnClickListener {
-            model.delay()
+        setContent {
+            MainScreen(
+                caption = viewModel.name,
+                onClick = viewModel::handleSubmit,
+            )
         }
     }
+}
+
+@Composable
+private fun MainScreen(
+    caption: String,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        Text("Hello $caption")
+        Button(
+            onClick = onClick,
+        ) {
+            Text("Submit")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    MainScreen("Geoff") {}
 }

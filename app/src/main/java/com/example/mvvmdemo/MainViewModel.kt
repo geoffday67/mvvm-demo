@@ -1,6 +1,9 @@
 package com.example.mvvmdemo
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,32 +16,37 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    val name = MutableLiveData<String>()
-    val geoff = MutableLiveData<String>()
+    var name: String by mutableStateOf("")
+
+    /*var geoff: String by mutableStateOf("")
 
     init {
         Firebase.database(" https://mvvm-demo-dfbe6-default-rtdb.europe-west1.firebasedatabase.app")
             .getReference("/geoff")
             .addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    geoff.value = snapshot.value.toString()
+                    geoff = snapshot.value.toString()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("GD", "Error: $error")
                 }
             })
+    }*/
+
+    fun handleSubmit() {
+        delay()
     }
 
     fun immediate() {
-        name.value = "Geoff at once"
+        name = "Geoff at once"
     }
 
     fun delay() {
         viewModelScope.launch {
-            name.value = "... wait for it"
+            name = "... wait for it"
             delay(2000)
-            name.value = "Geoff"
+            name = "Geoff"
         }
     }
 }
