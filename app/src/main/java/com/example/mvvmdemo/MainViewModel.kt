@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     var name: String by mutableStateOf("")
+    var imageURL: String by mutableStateOf("https://www.gstatic.com/webp/gallery/4.jpg")
 
     /*var geoff: String by mutableStateOf("")
 
@@ -46,7 +47,10 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             name = "... wait for it"
             delay(2000)
-            name = "Geoff"
+
+            // Here we update the state of the app's data. The UI will change to reflect changes in the mutableState variables.
+            name = "Fire!!"
+            imageURL = "https://www.gstatic.com/webp/gallery/5.jpg"
         }
     }
 }
