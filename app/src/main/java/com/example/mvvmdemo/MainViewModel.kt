@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -14,29 +15,28 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainViewModel : ViewModel() {
     var name: String by mutableStateOf("")
     var imageURL: String by mutableStateOf("https://www.gstatic.com/webp/gallery/4.jpg")
-
-    /*var geoff: String by mutableStateOf("")
-
-    init {
-        Firebase.database(" https://mvvm-demo-dfbe6-default-rtdb.europe-west1.firebasedatabase.app")
-            .getReference("/geoff")
-            .addValueEventListener(object: ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    geoff = snapshot.value.toString()
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("GD", "Error: $error")
-                }
-            })
-    }*/
+    var loggedIn: Boolean? by mutableStateOf(null)
 
     fun handleSubmit() {
         delay()
+    }
+
+    fun handleLogin() {
+        viewModelScope.launch {
+            loggedIn = try {
+                Firebase.auth
+                    .signInWithEmailAndPassword("geoff@isgreat.com", "the_truth")
+                    .await()
+                true
+            } catch (ignore: Exception) {
+                false
+            }
+        }
     }
 
     fun immediate() {

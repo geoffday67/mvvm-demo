@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +33,8 @@ class MainActivity : ComponentActivity() {
                 caption = viewModel.name,
                 imageURL = viewModel.imageURL,
                 onClick = viewModel::handleSubmit,
+                onLogin = viewModel::handleLogin,
+                loggedIn = viewModel.loggedIn,
             )
         }
     }
@@ -45,6 +49,8 @@ private fun MainScreen(
     caption: String,
     imageURL: String,
     onClick: () -> Unit,
+    onLogin: () -> Unit,
+    loggedIn: Boolean?,
 ) {
     Column(
         modifier = Modifier
@@ -59,6 +65,10 @@ private fun MainScreen(
         ) {
             Text("Submit")
         }
+        Login(
+            onLogin = onLogin,
+            loggedIn = loggedIn,
+        )
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
@@ -71,8 +81,41 @@ private fun MainScreen(
     }
 }
 
+@Composable
+fun Login(
+    loggedIn: Boolean?,
+    onLogin: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Button(
+            modifier = Modifier.padding(bottom = 8.dp),
+            onClick = onLogin,
+        ) {
+            Text("Login")
+        }
+        if (loggedIn != null) {
+            Text(
+                modifier = Modifier
+                    .border(
+                        width = 2.dp,
+                        color = if (loggedIn) Color.Green else Color.Red,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(all = 8.dp),
+                text = if (loggedIn) "Welcome!" else "I don't know you!"
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun Preview() {
-    MainScreen("Geoff", "") {}
+    Login(
+        loggedIn = false,
+        onLogin = {},
+    )
 }
