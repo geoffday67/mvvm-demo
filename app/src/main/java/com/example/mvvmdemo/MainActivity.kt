@@ -3,7 +3,6 @@ package com.example.mvvmdemo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -11,31 +10,48 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import coil.transform.CircleCropTransformation
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel = MainViewModel()
-
         setContent {
-            MainScreen(
-                // We use the state values in the view model so that Compose magically re-draws our UI when those values change.
-                caption = viewModel.name,
-                imageURL = viewModel.imageURL,
-                onClick = viewModel::handleSubmit,
-                onLogin = viewModel::handleLogin,
-                loggedIn = viewModel.loggedIn,
-            )
+            val navController = rememberNavController()
+            val viewModel = MainViewModel(navController)
+
+            NavHost(
+                navController = navController,
+                startDestination = "home",
+            ) {
+                composable("home") {
+                    MainScreen(
+                        // We use the state values in the view model so that Compose magically re-draws our UI when those values change.
+                        caption = viewModel.name,
+                        imageURL = viewModel.imageURL,
+                        onClick = viewModel::handleSubmit,
+                        onLogin = viewModel::handleLogin,
+                        loggedIn = viewModel.loggedIn,
+                        onNext = viewModel::handleNext,
+                    )
+                }
+                composable("great") {
+                    Text("Geoff is great!")
+                }
+            }
         }
     }
 }
@@ -51,6 +67,7 @@ private fun MainScreen(
     onClick: () -> Unit,
     onLogin: () -> Unit,
     loggedIn: Boolean?,
+    onNext: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -78,6 +95,11 @@ private fun MainScreen(
             contentDescription = null,
             contentScale = ContentScale.Crop,
         )
+        Button(
+            onClick = onNext,
+        ) {
+            Text("Next screen")
+        }
     }
 }
 
