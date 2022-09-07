@@ -1,8 +1,12 @@
 package com.example.mvvmdemo
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -10,16 +14,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -46,6 +47,8 @@ class MainActivity : ComponentActivity() {
                         onLogin = viewModel::handleLogin,
                         loggedIn = viewModel.loggedIn,
                         onNext = viewModel::handleNext,
+                        imageSource = viewModel.imageSource,
+                        onImagePick = viewModel::handleImage,
                     )
                 }
                 composable("great") {
@@ -68,6 +71,8 @@ private fun MainScreen(
     onLogin: () -> Unit,
     loggedIn: Boolean?,
     onNext: () -> Unit,
+    imageSource: Uri?,
+    onImagePick: (Uri) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -100,7 +105,36 @@ private fun MainScreen(
         ) {
             Text("Next screen")
         }
+        GetImage(
+            uri = imageSource,
+            onPick = onImagePick,
+        )
     }
+}
+
+@Composable
+fun GetImage(
+    uri: Uri?,
+    onPick: (Uri) -> Unit,
+) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
+        if (it != null) {
+            onPick(it)
+        }
+    }
+
+    Button(
+        onClick = {
+            launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        },
+    ) {
+        Text("Pick image")
+    }
+
+    AsyncImage(
+        model = uri,
+        contentDescription = null,
+    )
 }
 
 @Composable

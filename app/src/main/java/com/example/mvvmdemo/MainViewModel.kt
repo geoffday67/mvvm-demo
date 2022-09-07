@@ -1,5 +1,6 @@
 package com.example.mvvmdemo
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -18,6 +19,7 @@ class MainViewModel(
     var name: String by mutableStateOf("")
     var imageURL: String by mutableStateOf("https://www.gstatic.com/webp/gallery/4.jpg")
     var loggedIn: Boolean? by mutableStateOf(null)
+    var imageSource: Uri? by mutableStateOf(null)
 
     fun handleSubmit() {
         delay()
@@ -38,6 +40,10 @@ class MainViewModel(
 
     fun handleNext() {
         navController.navigate("great")
+    }
+
+    fun handleImage(uri: Uri) {
+        imageSource = uri
     }
 
     fun immediate() {
