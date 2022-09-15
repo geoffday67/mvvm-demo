@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 composable("great") {
-                    Text("Geoff is great!")
+                    AnimationScreen()
                 }
             }
         }
@@ -103,7 +103,7 @@ private fun MainScreen(
         Button(
             onClick = onNext,
         ) {
-            Text("Next screen")
+            Text("Animation screen")
         }
         GetImage(
             uri = imageSource,
