@@ -49,10 +49,14 @@ class MainActivity : ComponentActivity() {
                         onNext = viewModel::handleNext,
                         imageSource = viewModel.imageSource,
                         onImagePick = viewModel::handleImage,
+                        onApi = viewModel::handleApi,
                     )
                 }
                 composable("great") {
                     AnimationScreen()
+                }
+                composable("api") {
+                    ApiScreen()
                 }
             }
         }
@@ -73,6 +77,7 @@ private fun MainScreen(
     onNext: () -> Unit,
     imageSource: Uri?,
     onImagePick: (Uri) -> Unit,
+    onApi: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -104,6 +109,11 @@ private fun MainScreen(
             onClick = onNext,
         ) {
             Text("Animation screen")
+        }
+        Button(
+            onClick = onApi,
+        ) {
+            Text("API screen")
         }
         GetImage(
             uri = imageSource,
