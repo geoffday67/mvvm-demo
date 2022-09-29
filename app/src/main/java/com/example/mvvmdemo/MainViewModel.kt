@@ -6,16 +6,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class MainViewModel(
-    private val navController: NavHostController,
-    ) : ViewModel() {
+    private val navController: NavController? = null,
+    providedScope: CoroutineScope? = null,
+) : ViewModel() {
+    private val scope = providedScope ?: viewModelScope
+
     var name: String by mutableStateOf("")
     var imageURL: String by mutableStateOf("https://www.gstatic.com/webp/gallery/4.jpg")
     var loggedIn: Boolean? by mutableStateOf(null)
@@ -39,11 +43,11 @@ class MainViewModel(
     }
 
     fun handleNext() {
-        navController.navigate("great")
+        navController?.navigate("great")
     }
 
     fun handleApi() {
-        navController.navigate("api")
+        navController?.navigate("api")
     }
 
     fun handleImage(uri: Uri) {
@@ -55,7 +59,7 @@ class MainViewModel(
     }
 
     fun delay() {
-        viewModelScope.launch {
+        scope.launch {
             name = "... wait for it"
             delay(2000)
 
