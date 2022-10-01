@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class MainViewModel(
-    private val navController: NavController? = null,
+    private val navController: NavController,
     providedScope: CoroutineScope? = null,
 ) : ViewModel() {
     private val scope = providedScope ?: viewModelScope
@@ -43,11 +43,11 @@ class MainViewModel(
     }
 
     fun handleNext() {
-        navController?.navigate("great")
+        navController.navigate("great")
     }
 
     fun handleApi() {
-        navController?.navigate("api")
+        navController.navigate("api")
     }
 
     fun handleImage(uri: Uri) {
