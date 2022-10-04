@@ -25,8 +25,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.mvvmdemo.di.DiScreenPart1
+import com.example.mvvmdemo.di.DiScreenPart2
+import org.koin.core.component.KoinComponent
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +53,7 @@ class MainActivity : ComponentActivity() {
                         imageSource = viewModel.imageSource,
                         onImagePick = viewModel::handleImage,
                         onApi = viewModel::handleApi,
+                        onDi = viewModel::handleDi,
                     )
                 }
                 composable("great") {
@@ -57,6 +61,12 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("api") {
                     ApiScreen()
+                }
+                composable("di") {
+                    Column() {
+                        DiScreenPart1()
+                        DiScreenPart2()
+                    }
                 }
             }
         }
@@ -78,6 +88,7 @@ private fun MainScreen(
     imageSource: Uri?,
     onImagePick: (Uri) -> Unit,
     onApi: () -> Unit,
+    onDi: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -114,6 +125,11 @@ private fun MainScreen(
             onClick = onApi,
         ) {
             Text("API screen")
+        }
+        Button(
+            onClick = onDi,
+        ) {
+            Text("DI screen")
         }
         GetImage(
             uri = imageSource,

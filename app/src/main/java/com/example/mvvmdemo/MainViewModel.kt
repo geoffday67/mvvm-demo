@@ -50,6 +50,10 @@ class MainViewModel(
         navController.navigate("api")
     }
 
+    fun handleDi() {
+        navController.navigate("di")
+    }
+
     fun handleImage(uri: Uri) {
         imageSource = uri
     }
