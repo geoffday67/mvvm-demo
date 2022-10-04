@@ -6,12 +6,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.getViewModel
-
-/*
-This version creates two instances of the ViewModel but using DI creates only one per screen.
- */
 
 @Composable
 fun DiScreenPart1(
@@ -22,7 +19,10 @@ fun DiScreenPart1(
         Modifier.padding(24.dp)
     ) {
         Text("Part 1")
-        Text(diViewModel.message)
+        Text(
+            modifier = Modifier.testTag("id"),
+            text = diViewModel.message,
+        )
     }
 }
 
@@ -35,6 +35,9 @@ fun DiScreenPart2(
         Modifier.padding(24.dp)
     ) {
         Text("Part 2")
-        Text(diViewModel.message)
+        Text(
+            modifier = Modifier.testTag("id"),
+            text = diViewModel.message,
+        )
     }
 }
