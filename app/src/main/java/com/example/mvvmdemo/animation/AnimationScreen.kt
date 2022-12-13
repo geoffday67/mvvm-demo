@@ -12,10 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mvvmdemo.animation.AnimationViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun AnimationScreen() {
-    val viewModel = remember { AnimationViewModel() }
+fun AnimationScreen(
+    viewModel: AnimationViewModel,
+) {
     val size by animateIntAsState(
         targetValue = (if (viewModel.big) 40 else 10),
         finishedListener = { viewModel.onAnimationDone() }
@@ -35,8 +38,7 @@ fun AnimationScreen() {
         Text("Did it ${viewModel.count} times")
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {

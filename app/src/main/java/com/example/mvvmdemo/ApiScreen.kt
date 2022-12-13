@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
 @Composable
-fun ApiScreen() {
-    val viewModel = remember { ApiViewModel() }
-
+fun ApiScreen(
+    viewModel: ApiViewModel,
+) {
     LazyColumn() {
         items(viewModel.forces) {
-           Text(it.name)
+            Text(it.name)
         }
     }
 }

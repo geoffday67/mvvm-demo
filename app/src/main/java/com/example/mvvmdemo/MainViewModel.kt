@@ -17,8 +17,10 @@ import kotlinx.coroutines.tasks.await
 class MainViewModel(
     private val navController: NavController,
     providedScope: CoroutineScope? = null,
-) : ViewModel() {
+) : BaseViewModel() {
     private val scope = providedScope ?: viewModelScope
+
+    override val helpId = R.string.help_main
 
     var name: String by mutableStateOf("")
     var imageURL: String by mutableStateOf("https://www.gstatic.com/webp/gallery/4.jpg")
@@ -42,8 +44,8 @@ class MainViewModel(
         }
     }
 
-    fun handleNext() {
-        navController.navigate("great")
+    fun handleAnimation() {
+        navController.navigate("animation")
     }
 
     fun handleApi() {

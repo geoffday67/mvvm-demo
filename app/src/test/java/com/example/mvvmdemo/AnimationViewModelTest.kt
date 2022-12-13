@@ -1,5 +1,6 @@
 package com.example.mvvmdemo
 
+import com.example.mvvmdemo.animation.AnimationViewModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
